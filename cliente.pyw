@@ -21,8 +21,8 @@ import os
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-host = "192.168.0.100"
-porta = 8291
+host = "" #Any IP Address you wish
+porta = #Port of the connection (It has to be an integer)
 
 while True:
     try:
